@@ -18,8 +18,6 @@ services:
       dockerfile: Dockerfile-gobgp
     image: dravetech/gobgp_1:latest
     command: "-f gobgpd_1.conf"
-    ports:
-        - 50151:50051
     networks:
       test_net:
         ipv4_address: 10.0.123.100
@@ -30,8 +28,6 @@ services:
       dockerfile: Dockerfile-gobgp
     image: dravetech/gobgp_2:latest
     command: "-f gobgpd_2.conf"
-    ports:
-        - 50152:50051
     networks:
       test_net:
         ipv4_address: 10.0.123.200
