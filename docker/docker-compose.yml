@@ -1,0 +1,50 @@
+version: '2.1'
+
+services:
+  gobgp_control:
+    build:
+      context: ./
+      dockerfile: Dockerfile-control
+    image: dravetech/gobgp_control:latest
+    volumes:
+        - ../:/gobgprest
+    networks:
+      test_net:
+        ipv4_address: 10.0.123.10
+        ipv6_address: 2001:db8:123::10
+  gobgp_1:
+    build:
+      context: ./
+      dockerfile: Dockerfile-gobgp
+    image: dravetech/gobgp_1:latest
+    command: "-f gobgpd_1.conf"
+    ports:
+        - 50151:50051
+    networks:
+      test_net:
+        ipv4_address: 10.0.123.100
+        ipv6_address: 2001:db8:123::100
+  gobgp_2:
+    build:
+      context: ./
+      dockerfile: Dockerfile-gobgp
+    image: dravetech/gobgp_2:latest
+    command: "-f gobgpd_2.conf"
+    ports:
+        - 50152:50051
+    networks:
+      test_net:
+        ipv4_address: 10.0.123.200
+        ipv6_address: 2001:db8:123::200
+
+networks:
+  test_net:
+    enable_ipv6: true
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+      - subnet: 10.0.123.0/24
+        gateway: 10.0.123.1
+      - subnet: 2001:db8:123::/64
+        gateway: 2001:db8:123::1
